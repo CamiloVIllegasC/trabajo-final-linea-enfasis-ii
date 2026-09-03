@@ -1,0 +1,30 @@
+services:
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  back:
+    build: ./back
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  front:
+    build:
+      context: ./front
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
+    image: citas-front:latest
+    container_name: citas-front
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+  
+
+volumes:
+  db_data:
+  backend:
+  frontend:
