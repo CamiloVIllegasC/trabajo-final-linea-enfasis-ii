@@ -57,7 +57,7 @@ export const getAllUsers = async (req, res) => {
         u.name,
         u.email,
         u.role,
-        u.telefono,
+        u.phone,
         GROUP_CONCAT(s.name) AS specialties
       FROM users u
       LEFT JOIN patients p ON u.id = p.user_id

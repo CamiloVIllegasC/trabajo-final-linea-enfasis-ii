@@ -12,6 +12,7 @@ const createTables = async () => {
         email VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
         role ENUM('PATIENT','DOCTOR','ADMIN') NOT NULL,
+        phone VARCHAR(20) DEFAULT NULL,
         created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
