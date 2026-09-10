@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../db/mysql.js';
 
 export const register = async (req, res) => {
-    const { name, email, password, role, telefono } = req.body;
+    const { name, email, password, role, phone } = req.body;
 
-    if (!name || !email || !password || !role || !telefono) {
+    if (!name || !email || !password || !role || !phone) {
         return res.status(400).json({ message: 'Datos incompletos' });
     }
 
@@ -23,9 +23,9 @@ export const register = async (req, res) => {
 
     // Crear usuario
     const [result] = await pool.query(
-        `INSERT INTO users (name, email, password, role, telefono)
+        `INSERT INTO users (name, email, password, role, phone)
      VALUES (?, ?, ?, ?, ?)`,
-        [name, email, hashedPassword, role, telefono]
+        [name, email, hashedPassword, role, phone]
     );
 
     const userId = result.insertId;

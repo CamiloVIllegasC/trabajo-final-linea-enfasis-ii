@@ -5,8 +5,22 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-asignar_citas}
-      MYSQL_USER: ${DB_USER:-root}
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-123}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${DB_PASSWORD:-123}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
   back:
     build: ./back
     image: citas-back:latest
@@ -16,12 +30,13 @@ services:
       - "${BACK_PORT:-3000}:3000"
     env_file:
       - .env
-    enviroments:
-      DB_HOST: ${DB_HOST:-db}
-      DB_USER: ${DB_USER:-root}
-      DB_PORT: ${DB_PORT:-3306}
+    environment:
+      DB_HOST: db
+      PORT: 3000
+      DB_PORT: 3306
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   front:
     build:
       context: ./front
@@ -31,9 +46,9 @@ services:
     container_name: citas-front
     ports:
       - "${FRONT_PORT:-5173}:80"
-    env_file:
-      - .env
     restart: unless-stopped
+    depends_on:
+      - back
   
   
 

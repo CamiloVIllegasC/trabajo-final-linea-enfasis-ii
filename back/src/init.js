@@ -1,5 +1,18 @@
 import { pool } from "./db/mysql.js";
 
+const addColumnIfMissing = async (table, column, definition) => {
+  const [rows] = await pool.query(
+    `SELECT 1 FROM information_schema.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+    [table, column]
+  );
+
+  if (rows.length > 0) return;
+
+  await pool.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+  console.log(`Columna "${table}.${column}" agregada.`);
+};
+
 const createTables = async () => {
   try {
     console.log("Iniciando creación de tablas...");
@@ -13,6 +26,7 @@ const createTables = async () => {
         password VARCHAR(255) NOT NULL,
         role ENUM('PATIENT','DOCTOR','ADMIN') NOT NULL,
         phone VARCHAR(20) DEFAULT NULL,
+        activo TINYINT(1) not null default 1,
         created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
@@ -107,6 +121,9 @@ const createTables = async () => {
       )
     `);
     console.log('Tabla "appointments" verificada/creada.');
+
+    await addColumnIfMissing("users", "phone", "VARCHAR(20) DEFAULT NULL");
+    await addColumnIfMissing("users", "activo", "TINYINT(1) NOT NULL DEFAULT 1");
 
     console.log("Inicialización de base de datos completada exitosamente.");
     process.exit(0);

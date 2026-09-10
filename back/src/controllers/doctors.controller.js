@@ -9,7 +9,7 @@ export const getDoctors = async (req, res) => {
         d.id AS doctor_id,
         u.name,
         u.email,
-        u.telefono
+        u.phone
       FROM doctors d
       JOIN users u ON d.user_id = u.id
     `;
@@ -55,7 +55,7 @@ export const getDoctors = async (req, res) => {
       id: doctor.doctor_id,
       name: doctor.name,
       email: doctor.email,
-      telefono: doctor.telefono,
+      phone: doctor.phone,
       specialties: specialtiesRows
         .filter((s) => s.doctor_id === doctor.doctor_id)
         .map((s) => s.name),
