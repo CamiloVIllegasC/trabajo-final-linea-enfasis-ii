@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Calendar } from "lucide-react";
+import { Calendar, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { authAPI } from "../services/api.js";
 
@@ -15,7 +15,7 @@ export function Register() {
     email: "",
     password: "",
     role: "PATIENT",
-    telefono: "",
+    phone: "",
   });
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -80,8 +80,8 @@ export function Register() {
                 id="phone"
                 type="tel"
                 placeholder="555-0000"
-                value={formData.telefono}
-                onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
               />
             </div>

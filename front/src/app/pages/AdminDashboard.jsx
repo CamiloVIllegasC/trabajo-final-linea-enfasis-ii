@@ -629,13 +629,13 @@ export function AdminDashboard() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Teléfono</Label>
+                    <Label htmlFor="phone">phone</Label>
                     <Input
                       id="phone"
                       type="tel"
-                      value={newUser.telefono}
+                      value={newUser.phone}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, telefono: e.target.value })
+                        setNewUser({ ...newUser, phone: e.target.value })
                       }
                       required
                     />
