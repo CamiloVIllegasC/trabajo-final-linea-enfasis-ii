@@ -6,8 +6,6 @@ COPY package.json package-lock.json ./
 
 RUN npm ci --omit=dev
 
-RUN npm src/init.js
-
 COPY . .
 
 ENV PORT=3000
